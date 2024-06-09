@@ -86,9 +86,24 @@
                     }
                 }
 
+                // Copy name to clipboard
+                contextMenu.Items.Add(new Separator());
+                contextMenu.Items.Add(new MenuItem { Header = "Copy to Clipboard", Command = GetClipboardCommand(vfrNode) });
+
             }
 
             e.ContextMenu = contextMenu;
+        }
+
+        private static RelayCommand GetClipboardCommand(VFRNode vfrNode)
+        {
+            var parts = new List<string>
+            {
+                vfrNode.NamespaceName, vfrNode.TypeName, vfrNode.ContainerName
+            };
+            var name = string.Join(".", parts.Where(x => string.IsNullOrEmpty(x) is false));
+            var command = new RelayCommand(() => Clipboard.SetText(name));
+            return command;
         }
 
         private static List<SearchableSymbol> GetSearchableLocations(VFRNode vfrNode)
