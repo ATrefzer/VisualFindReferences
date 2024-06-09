@@ -33,6 +33,7 @@
             ViewModel.ProjectFilterMatchPattern = options.DefaultProjectFilter;
             ViewModel.LayoutType = options.DefaultLayoutAlgorithmType;
             ViewModel.AutoFitToDisplay = options.DefaultFitToDisplay;
+            ViewModel.AppendNodesToCanvas = options.DefaultAppendToCanvas;
 
             SetMenuChecks();
         }
@@ -160,6 +161,10 @@
             SetMenuCheck(layoutMenu, "VerticalGridMenuItem", ViewModel.LayoutType == LayoutAlgorithmType.VerticalBalancedGrid);
             SetMenuCheck(layoutMenu, "ForceDirectedMenuItem", ViewModel.LayoutType == LayoutAlgorithmType.ForceDirected);
 
+
+            var optionsMenu = (ContextMenu)FindResource("CanvasOptionsContextMenu");
+            SetMenuCheck(optionsMenu, "AppendNodesToCanvasMenuItem", ViewModel.AppendNodesToCanvas);
+
             AutoFitToDisplay.IsChecked = ViewModel.AutoFitToDisplay;
         }
 
@@ -285,6 +290,26 @@
         private void AutoFitToDisplay_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.AutoFitToDisplay = AutoFitToDisplay.IsChecked ?? false;
+        }
+
+        private void CanvasOptionsClick(object sender, RoutedEventArgs e)
+        {
+            var contextMenu = (ContextMenu)FindResource("CanvasOptionsContextMenu");
+            contextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            contextMenu.PlacementTarget = CanvasOptionsButton;
+            contextMenu.IsOpen = true;
+        }
+
+        private void AppendNodesToCanvasClick(object sender, RoutedEventArgs e)
+        {
+            var contextMenu = sender as MenuItem;
+            if (contextMenu is null)
+            {
+                return;
+            }
+            
+            ViewModel.AppendNodesToCanvas = contextMenu.IsChecked;
+            SetMenuChecks();
         }
     }
 }

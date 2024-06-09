@@ -82,7 +82,6 @@
                     throw new InvalidOperationException("Could not find the text view");
                 }
                 var window = _package.ShowToolWindow();
-                window.Clear();
                 window.FindReferences(textView, _package);
             }, _package);
         }

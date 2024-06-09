@@ -117,6 +117,12 @@ namespace VisualFindReferences.Core.Graph.ViewModel
             }
         }
 
+        /// <summary>
+        /// A second find references command appends the results to the canvas instead of executing a
+        /// clear first.
+        /// </summary>
+        public bool AppendNodesToCanvas { get; set; } = true;
+
         internal Func<Project, bool> GetProjectFilter()
         {
             return x => !_excludedProjectIds.Contains(x.Id.Id);

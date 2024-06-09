@@ -45,6 +45,11 @@ namespace VisualFindReferences.Views
 
         public void FindReferences(IWpfTextView textView, IVisualFindReferencesPackage package)
         {
+            if (_host.ViewModel.AppendNodesToCanvas is false)
+            {
+                Clear();
+            }
+
             async Task<FoundReferences> FindReferencesAsync(Action<string> updateText, NodeGraphViewModel viewModel, CancellationToken cancellation)
             {
                 var (syntaxNode, semanticModel) = await TextViewHelper.GetTargetSymbolAsync(textView, cancellation).ConfigureAwait(true);

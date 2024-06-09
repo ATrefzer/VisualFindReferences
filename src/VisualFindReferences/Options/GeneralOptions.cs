@@ -1,10 +1,10 @@
-﻿namespace VisualFindReferences.Options
-{
-    using System.ComponentModel;
-    using Microsoft.VisualStudio.Shell;
-    using VisualFindReferences.Core.Graph.Layout;
-    using VisualFindReferences.Core.Graph.ViewModel;
+﻿using System.ComponentModel;
+using Microsoft.VisualStudio.Shell;
+using VisualFindReferences.Core.Graph.Layout;
+using VisualFindReferences.Core.Graph.ViewModel;
 
+namespace VisualFindReferences.Options
+{
     public class GeneralOptions : DialogPage
     {
         [Category("Defaults")]
@@ -26,5 +26,10 @@
         [DisplayName("Layout type")]
         [Description("The default layout type to use when arranging nodes")]
         public LayoutAlgorithmType DefaultLayoutAlgorithmType { get; set; } = LayoutAlgorithmType.VerticalBalancedGrid;
+
+        [Category("Defaults")]
+        [DisplayName("Canvas options")]
+        [Description("Behaviour of canvas if find references is executed. false = canvas is cleard, true = new nodes are appended")]
+        public bool DefaultAppendToCanvas { get; set; } = true;
     }
 }
