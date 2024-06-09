@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows.Media;
 using VisualFindReferences.Core.Graph.ViewModel;
 
@@ -7,6 +8,8 @@ namespace VisualFindReferences.Core.Graph.Model
     [DebuggerDisplay("{ContainerName}")]
     public class Node : ModelBase
     {
+        public string Id { get; } = Guid.NewGuid().ToString("N");
+
         public NodeGraph Owner { get; }
 
         public NodeViewModel ViewModel { get; }

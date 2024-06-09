@@ -447,6 +447,16 @@
                     </StackPanel>
                 </Button>
 
+                <!-- Export to Dgml -->
+                <Button Click="ExportToDgmlClick" Style="{DynamicResource {x:Static vsfx:VsResourceKeys.ButtonStyleKey}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,4,0"
+                            Foreground="{DynamicResource {x:Static platformUI:EnvironmentColors.ButtonTextBrushKey}}"
+                            Text="Export to DGML" />
+                    </StackPanel>
+                </Button>
+
 
             </StackPanel>
             <v:NodeGraphView

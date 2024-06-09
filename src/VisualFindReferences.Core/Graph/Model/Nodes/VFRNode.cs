@@ -1,12 +1,18 @@
-﻿using Microsoft.CodeAnalysis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
+using Microsoft.CodeAnalysis;
 
 namespace VisualFindReferences.Core.Graph.Model.Nodes
 {
     public abstract class VFRNode : Node
     {
-        protected VFRNode(NodeGraph flowChart, FoundReferences foundReferences, Geometry icon, Brush iconColor) : base(flowChart, GetContainerName(foundReferences), GetTypeName(foundReferences), 0, 0, icon, iconColor)
+        private bool _noMoreReferences;
+
+        private bool _referenceLocationsAdded;
+
+        protected VFRNode(NodeGraph flowChart, FoundReferences foundReferences, Geometry icon, Brush iconColor) : base(
+            flowChart, GetContainerName(foundReferences), GetTypeName(foundReferences), 0, 0, icon, iconColor)
         {
             NodeFoundReferences = foundReferences;
             NamespaceName = foundReferences.Symbol.ContainingNamespace.ToDisplayString();
@@ -28,11 +34,9 @@ namespace VisualFindReferences.Core.Graph.Model.Nodes
 
         public List<ISymbol> SearchedSymbols { get; } = new List<ISymbol>();
 
-        private bool _noMoreReferences;
-
         public bool NoMoreReferences
         {
-            get { return _noMoreReferences; }
+            get => _noMoreReferences;
             set
             {
                 if (value != _noMoreReferences)
@@ -43,11 +47,9 @@ namespace VisualFindReferences.Core.Graph.Model.Nodes
             }
         }
 
-        private bool _referenceLocationsAdded;
-
         public bool ReferenceLocationsAdded
         {
-            get { return _referenceLocationsAdded; }
+            get => _referenceLocationsAdded;
             set
             {
                 if (value != _referenceLocationsAdded)
@@ -58,6 +60,19 @@ namespace VisualFindReferences.Core.Graph.Model.Nodes
             }
         }
 
+        public string FullName
+        {
+            get
+            {
+                var parts = new List<string>
+                {
+                    NamespaceName, TypeName, ContainerName
+                };
+                var name = string.Join(".", parts.Where(x => string.IsNullOrEmpty(x) is false));
+                return name;
+            }
+        }
+
         private static string GetContainerName(FoundReferences foundReferences)
         {
             var name = foundReferences.Symbol.Name;
@@ -65,6 +80,7 @@ namespace VisualFindReferences.Core.Graph.Model.Nodes
             {
                 name = "Unnamed";
             }
+
             return name;
         }
 

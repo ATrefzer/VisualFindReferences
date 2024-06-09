@@ -70,6 +70,8 @@
   <ItemGroup>
     <Compile Include="Commands\FindReferencesForSymbolCommand.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Exporter\DgmlExport.cs" />
+    <Compile Include="Exporter\DgmlFileBuilder.cs" />
     <Compile Include="Helper\Attempt.cs" />
     <Compile Include="Helper\GoTo.cs" />
     <Compile Include="Helper\TextViewHelper.cs" />

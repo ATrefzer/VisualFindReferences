@@ -1,4 +1,6 @@
-﻿namespace VisualFindReferences.Views
+﻿using Microsoft.VisualStudio.Debugger.Interop;
+
+namespace VisualFindReferences.Views
 {
     using Microsoft.CodeAnalysis;
     using System;
@@ -15,6 +17,7 @@
     using VisualFindReferences.Core.Graph.Model.Nodes;
     using VisualFindReferences.Core.Graph.View;
     using VisualFindReferences.Core.Graph.ViewModel;
+    using VisualFindReferences.Exporter;
     using VisualFindReferences.Helper;
     using VisualFindReferences.Options;
 
@@ -98,12 +101,8 @@
 
         private static RelayCommand GetClipboardCommand(VFRNode vfrNode)
         {
-            var parts = new List<string>
-            {
-                vfrNode.NamespaceName, vfrNode.TypeName, vfrNode.ContainerName
-            };
-            var name = string.Join(".", parts.Where(x => string.IsNullOrEmpty(x) is false));
-            var command = new RelayCommand(() => Clipboard.SetText(name));
+          
+            var command = new RelayCommand(() => Clipboard.SetText(vfrNode.FullName));
             return command;
         }
 
@@ -298,6 +297,21 @@
             contextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             contextMenu.PlacementTarget = CanvasOptionsButton;
             contextMenu.IsOpen = true;
+        }
+
+        private void ExportToDgmlClick(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                DefaultExt = ".dgml",
+                Filter = "Directed Graph Markup Language (*.dgml)|*.dgml"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                var fileName = saveFileDialog.FileName;
+                DgmlExport.Export(fileName, ViewModel.Model.Nodes, ViewModel.Model.Connectors);
+            }
         }
 
         private void AppendNodesToCanvasClick(object sender, RoutedEventArgs e)
